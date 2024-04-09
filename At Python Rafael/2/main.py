@@ -1,11 +1,12 @@
 import re
+import os
 saldo = 0
 
 def inserir_saldo():
             
-
         try:
-            novo_saldo = float(input("Quanto pretende adicionar ao seu saldo ?  "))
+            
+            novo_saldo = float(input("Quanto é o seu saldo atual:  "))
             
             global saldo
             saldo_antigo = saldo
@@ -15,10 +16,8 @@ def inserir_saldo():
 
         except ValueError:
 
-            print("Você deve inserir um número.")
+            print("Você deve inserir um número, retornando ao menu principal.")
            
-
-            
 
 def anotar_receitas():
     
@@ -41,14 +40,13 @@ def anotar_receitas():
 
 def anotar_despesas():
     """Função que permite o usuário anotar suas despesas com categorias pré-definidas."""
-#    categoria = input("Categoria do gasto:  ").split(";").capitalize()
-    try:
-        gasto = float(input("Valor do gasto:  "))    
+    
+    try: # try catch para fazer com que o programa não crashe caso seja escrito algo alem de um float.
+        gasto = float(input("Valor do gasto:  "))     
     except ValueError:
-        print("Algum error ocorreu.")            
+        print("Ocorreu um erro na sua instrução, retornando ao menu principal......")            
         return
         
-    
     print("Categorias [1]Lazer  [2]Transporte  [3] Alimentaco")
     resposta = input("Qual:  ")
     descricao = input("Escreva a descrição:  ").split(";")
@@ -60,19 +58,21 @@ def anotar_despesas():
     
         case '1':
             with open("relatorio_lazer.txt", 'a') as f:
-                f.writelines(f"\nCategoria: Lazer; Valor: -{gasto}; Saldo antes: {saldo_antigo} ;Saldo Atual: {saldo}")
+                f.writelines(f"\nCategoria: Lazer;Descricao {descricao} ;Valor: -{gasto}; Saldo antes: {saldo_antigo} ;Saldo Atual: {saldo}")
 
         case '2':
               
          with open("relatorio_transporte.txt", 'a') as f:
-            f.writelines(f"Categoria: Transporte;Valor: -{gasto} ;Saldo antes: {saldo_antigo}; Saldo Atual: {saldo}\n")
+            f.writelines(f"Categoria: Transporte;Descricao {descricao} ;Valor: -{gasto} ;Saldo antes: {saldo_antigo}; Saldo Atual: {saldo}\n")
 
         case '3':
          with open("relatorio_alimentacao.txt", 'a') as f:
-            f.writelines(f"Categoria: Alimentacao;Valor: -{gasto};Saldo antes:{saldo_antigo}; Saldo Atual: {saldo}\n")
+            f.writelines(f"Categoria: Alimentacao;Descricao {descricao} ;Valor: -{gasto};Saldo antes:{saldo_antigo}; Saldo Atual: {saldo}\n")
     
         case _:
             print("Categoria não reconhecida.... tente novamente.")
+            
+    return saldo
 
 
 def listar_receitas():
@@ -101,10 +101,46 @@ def listar_despesas():
 
 
 def listar_todas_despesas():
+    """Função que lista de forma ordenada todos as despesas, checando primeiramente os arquivos de texto nais quais elas são anotadas existem ou não."""
+    todas_despesas = []
+    
+    try:
+        
+        if os.path.isfile("relatorio_lazer.txt") == True:
 
-    with open("relatorio_lazer.txt", 'r') as ler:
+            print("Exibindo do maior ao menor...")
+        # Abrindo e lendo o arquivo de cada categoria
+            with open("relatorio_lazer.txt", 'r') as f_lazer:
+                todas_despesas.extend(f_lazer.readlines())
 
-        print(sorted(ler.readlines()))
+        elif os.path.isfile("relatorio_transporte.txt") == True:
+
+            print("Exibindo do maior ao menor...")
+            with open("relatorio_transporte.txt", 'r') as f_transporte:
+                todas_despesas.extend(f_transporte.readlines())
+
+        elif os.path.isfile("relatorio_alimentacao.txt") == True:
+
+            print("Exibindo do maior ao menor...")
+            with open("relatorio_alimentacao.txt", 'r') as f_alimentacao:
+                todas_despesas.extend(f_alimentacao.readlines())
+
+        else: # else caso não seja encontrado nada
+            print("Não foi encontrado nenhum arquivo.")
+
+        # Ordenando as despesas por categoria e valor
+        todas_despesas.sort(key=lambda x: (
+            x.split(';')[0] if len(x.split(';')) > 1 else '',
+            float(x.split(';')[2].split(': ')[1]) if len(x.split(';')) > 2 else 0
+        ))
+
+        # Exibindo as despesas ordenadas
+        for despesa in todas_despesas:
+            print(despesa.strip())
+    except FileNotFoundError:  # try catch para tratar em caso de erro do arquivo não existir.
+        print("Não foi achado nenhum arquivo correspondente as categorias pré definidas, retornando ao menu")
+        return
+
 
 
 def lazer():
@@ -127,7 +163,6 @@ def alimentacao():
     with open("relatorio_alimentacao.txt", 'r') as f:
 
         print(f.readlines())
-
 
 
         
@@ -156,6 +191,6 @@ def menu():
                 break
             case _:
                 print("Escolha uma das opções acima, por favor.")
-                return False        
+                        
 inserir_saldo()
 menu()
