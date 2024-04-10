@@ -1,4 +1,3 @@
-import re
 import os
 saldo = 0
 
@@ -35,7 +34,6 @@ def anotar_receitas():
     
     if voltar == '1': menu()
     if voltar == '2': anotar_receitas()
-
 
 
 def anotar_despesas():
@@ -109,24 +107,24 @@ def listar_todas_despesas():
         if os.path.isfile("relatorio_lazer.txt") == True:
 
             print("Exibindo do maior ao menor...")
-        # Abrindo e lendo o arquivo de cada categoria
+            # Abrindo e lendo o arquivo de cada categoria
             with open("relatorio_lazer.txt", 'r') as f_lazer:
                 todas_despesas.extend(f_lazer.readlines())
 
-        elif os.path.isfile("relatorio_transporte.txt") == True:
+        if os.path.isfile("relatorio_transporte.txt") == True:
 
-            print("Exibindo do maior ao menor...")
-            with open("relatorio_transporte.txt", 'r') as f_transporte:
-                todas_despesas.extend(f_transporte.readlines())
+                print("Exibindo do maior ao menor...")
+                with open("relatorio_transporte.txt", 'r') as f_transporte:
+                    todas_despesas.extend(f_transporte.readlines())
 
-        elif os.path.isfile("relatorio_alimentacao.txt") == True:
+        if os.path.isfile("relatorio_alimentacao.txt") == True:
 
-            print("Exibindo do maior ao menor...")
-            with open("relatorio_alimentacao.txt", 'r') as f_alimentacao:
-                todas_despesas.extend(f_alimentacao.readlines())
+                print("Exibindo do maior ao menor...")
+                with open("relatorio_alimentacao.txt", 'r') as f_alimentacao:
+                    todas_despesas.extend(f_alimentacao.readlines())
 
         else: # else caso não seja encontrado nada
-            print("Não foi encontrado nenhum arquivo.")
+                print("Não foi encontrado nenhum arquivo.")
 
         # Ordenando as despesas por categoria e valor
         todas_despesas.sort(key=lambda x: (
@@ -137,33 +135,47 @@ def listar_todas_despesas():
         # Exibindo as despesas ordenadas
         for despesa in todas_despesas:
             print(despesa.strip())
+ 
     except FileNotFoundError:  # try catch para tratar em caso de erro do arquivo não existir.
         print("Não foi achado nenhum arquivo correspondente as categorias pré definidas, retornando ao menu")
         return
 
 
-
 def lazer():
     """Função que lê o arquivo de texto referente aos gastos relacionados ao lazer"""    
-    with open("relatorio_lazer.txt", 'r') as f:
 
-        print(f.readlines())
+    if os.path.isfile("relatorio_lazer.txt") == False:
+        print("Não existe tal arquivo.")
+        return
+
+    else:
+        with open("relatorio_lazer.txt", 'r') as f:
+
+            print(f.readlines())
 
 
 def transporte():
     """Função que lê o arquivo de texto referente aos gastos relacionados ao transporte"""
 
-    with open("relatorio_transporte.txt", 'r') as f: 
-        print(f.readlines())
+    if os.path.isfile("relatorio_transporte.txt") == False:
+        print("Não existe tal arquivo.")
+        return
+
+    else:
+        with open("relatorio_transporte.txt", 'r') as f:
+            print(f.readlines())
 
 
 def alimentacao():
     """Função que lê o arquivo de texto referente aos gastos relacionados a alimentacao"""
+    if os.path.isfile("relatorio_alimentacao.txt") == False:
+        print("Não existe tal arquivo.")
+        return
 
-    with open("relatorio_alimentacao.txt", 'r') as f:
+    else:
+        with open("relatorio_alimentacao.txt", 'r') as f:
 
-        print(f.readlines())
-
+            print(f.readlines())
 
         
 def menu():
