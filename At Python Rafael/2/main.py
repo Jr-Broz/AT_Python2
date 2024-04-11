@@ -28,7 +28,7 @@ def anotar_receitas():
     saldo += aumento_receita 
 
     with open("relatorio_receitas.txt", 'a') as f:
-        f.writelines(f"\nFonte da nova receita: {fonte_financeira};Valor:{aumento_receita};Saldo antes do aumento: {saldo_antigo};Saldo após aumento: {saldo}")
+        f.writelines(f"\n Fonte da nova receita: {fonte_financeira};Valor:{aumento_receita};Saldo antes do aumento: {saldo_antigo};Saldo após aumento: {saldo}")
     
     voltar = input("Voltar ao menu ?  [1] Sim  [2] Anotar mais alguma receita:  ")
     
@@ -39,15 +39,23 @@ def anotar_receitas():
 def anotar_despesas():
     """Função que permite o usuário anotar suas despesas com categorias pré-definidas."""
     
+
     try: # try catch para fazer com que o programa não crashe caso seja escrito algo alem de um float.
-        gasto = float(input("Valor do gasto:  "))     
+        gasto = float(input("Valor do gasto:  "))
     except ValueError:
         print("Ocorreu um erro na sua instrução, retornando ao menu principal......")            
         return
         
     print("Categorias [1]Lazer  [2]Transporte  [3] Alimentaco")
     resposta = input("Qual:  ")
+    
+    if resposta not in ['1','2','3']: 
+        print("Escolha não está dentro da categoria setada.")
+        return
+    
     descricao = input("Escreva a descrição:  ").split(";")
+
+         
     global saldo
     saldo_antigo = saldo
     saldo -= gasto
@@ -182,24 +190,22 @@ def menu():
     """Função que simula uma interface gráfica para o usuário interagir com o programa."""
 
     while True:
-        print("\n[1] Adicionar saldo \n[2] Anotar alguma receita \n[3] Listar todas as receitas  \n[4] Anotar despesa \n[5] Listar despesas \n[6] Listar Todas despesas \n[7] Sair")
+        print("\n[1] Anotar alguma receita \n[2] Listar todas as receitas  \n[3] Anotar despesa \n[4] Listar despesas \n[5] Listar Todas despesas \n[6] Sair")
         print('-' * 30)
         resposta = input("Escolha:  ")
     
         match resposta:
             case '1':
-                inserir_saldo()
-            case '2':
                 anotar_receitas()
-            case '3':
+            case '2':
                 listar_receitas()
-            case '4':
+            case '3':
                 anotar_despesas()
-            case '5':
+            case '4':
                 listar_despesas()
-            case '6':
+            case '5':
                 listar_todas_despesas()
-            case '7':
+            case '6':
                 break
             case _:
                 print("Escolha uma das opções acima, por favor.")
