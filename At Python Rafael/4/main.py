@@ -45,15 +45,26 @@ def criptografar():
 
 
     try:
-        numero_de_troca_posicao = int(input("Escreva o número de troca de posição, de 2 a 6:  "))    
+    
+        try:
+            numero_de_troca_posicao = int(input("Escreva o número de troca de posição, de 2 a 6:  "))    
+
+        except UnboundLocalError:
+            print("Error, retornando ao menu")
+            return
 
     except ValueError:
         print("Por favor, insira um valor numérico.")
         
-        
+       
+    if numero_de_troca_posicao == "":
+        print("Por favor, insira um valor numérico.")    
+
 
     if numero_de_troca_posicao not in range(2,7):
+
         print("Erro, posição fora do limite estabelecido, tente novamente.")
+        return
     
     if username == "":
         print("Username n pode ficar vazia")
