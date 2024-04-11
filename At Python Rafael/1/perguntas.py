@@ -584,7 +584,7 @@ def jogo():
     global quantidade_erros
 
     # Lista de perguntas
-    perguntas = [segunda_rodada_pergunta_dezenove, segunda_rodada_pergunta_dezoito, segunda_rodada_pergunta_dezessete, pergunta_cinco,
+    perguntas = [pergunta_cinco, pergunta_um, pergunta_dois, pergunta_tres, pergunta_seis,
                 pergunta_seis, pergunta_sete, pergunta_oito, pergunta_nove, pergunta_dez,
                 pergunta_onze, pergunta_doze, pergunta_treze, pergunta_quatorze, pergunta_quinze]
 
