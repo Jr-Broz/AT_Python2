@@ -29,16 +29,21 @@ def criptografar():
     """Função que recebe 3 inputs do usuário, criptografa os dados e os salva em um arquivo de texto, seguindo cada qual categoria de gasto.
 
     O método ord() retorna o número do caracter passado como parametro presente na tabela ASCII.
-    
     O método chr() retorna o caracter baseado no parâmetro da tabela ASCII.
     """
 
     palavra_chave = input("Qual a palavra chave? pode ser um número, palavra, sinal, o que for:  ")
-    
     senha_para_criptografia = input("Qual senha vc quer criptografa:  ")
-    username = input("Username:  ")
-    servico = input("servico:  ")
+
+
+    try:
+        username = input("Username:  ")
+        servico = input("servico:  ")
     
+    except ValueError:
+        print("Insira um tipo de valor válido.")
+
+
     try:
         numero_de_troca_posicao = int(input("Escreva o número de troca de posição, de 2 a 6:  "))    
 
@@ -46,9 +51,18 @@ def criptografar():
         print("Por favor, insira um valor numérico.")
         
         
+
     if numero_de_troca_posicao not in range(2,7):
         print("Erro, posição fora do limite estabelecido, tente novamente.")
     
+    if username == "":
+        print("Username n pode ficar vazia")
+        return
+
+    if servico == "":
+        print("Servico nao pode ficar vazio")
+        return
+        
     else:
         senha_criptografada = []
         username_criptografado = []
@@ -70,34 +84,34 @@ def criptografar():
         
             
         checar_palavra_chave = input("Qual a palavra chave?   ")
+        
         try:
-            checar_username = input("Escreva seu username, por favor para checarmos se podes visualizar sua senha:  ")
+            # checar_username = input("Escreva seu username, por favor para checarmos se podes visualizar sua senha:  ")
             checar_servico = input("Escreva seu serviço, por favor:  ")
 
         except ValueError:
             print("Por favor, insira uma string.")
 
 
-        if checar_username == username and checar_servico == servico:
+        if checar_servico == servico:
             if checar_palavra_chave == palavra_chave:
-            
-            
+                                
                 with open('dados_criptografados.txt', 'w') as arquivo:
 
                     arquivo.write(f"Senha criptografada: {''.join(senha_criptografada)}\n")
                     arquivo.write(f"Username criptografado: {''.join(username_criptografado)}\n")
                     arquivo.write(f"Servico criptografado: {''.join(servico_criptografado)}\n")
                     arquivo.write("---------------------------------------------------------------")
-                
-        
-                print(f"Senha: {senha_para_criptografia}")
-                print(f"Username: {username}")
-                print(f"Servico: {servico}")
-            else:
-                print("Você não tem permissão para acessar esta conta.")
-           
-           
-# Criar palavra chave                
+                    
+            
+                    print(f"Senha: {senha_para_criptografia}")
+                    print(f"Username: {username}")
+                    print(f"Servico: {servico}")
+
+        else:
+            print("Você não tem permissão para acessar esta conta.")
+            
+                           
 def menu():
     
     while True:
@@ -116,5 +130,7 @@ def menu():
                 
                 case _:
                     print("Comando não reconhecido  ")                
+
+
         
 menu()
